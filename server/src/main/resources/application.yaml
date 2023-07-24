@@ -1,0 +1,19 @@
+server:
+  port: 8080
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/InstaVitaliy
+    username: postgres
+    password: 198855
+jwt:
+  secret-key: a3ce34220d37d8665c6a3f0698407ed6f57bd3960a6d932416dde5d4a125e550
+  token-prefix: Bearer
+  header-string: Authorization
+  content-type: application/json
+  expiration-time: 600_000_000
