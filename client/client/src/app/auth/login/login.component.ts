@@ -41,11 +41,11 @@ export class LoginComponent implements OnInit {
       password: this.loginForm.value.password
     }).subscribe(data => {
       console.log(data);
-      this.tokenService.saveToken(data.token);
       this.tokenService.saveUser(data);
+      this.tokenService.saveToken(data.token);
       this.notificationService.showSnackBar('Successfully logged in');
       this.router.navigate(['/']);
-      window.location.reload();
+
     }, error => {
       console.log(error);
       this.notificationService.showSnackBar(error.message);

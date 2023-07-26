@@ -34,7 +34,7 @@ public class CommentService {
         Comment comment = new Comment();
         comment.setPost(post);
         comment.setUserId(user.getId());
-        comment.setUserName(user.getUsername());
+        comment.setUserName(user.getUsersName());
         comment.setMessage(commentDTO.getMessage());
         log.info("Saving comment for Post: {}", post.getId());
         return commentRepository.saveAndFlush(comment);
@@ -53,6 +53,6 @@ public class CommentService {
 
     private User getUserByPrincipal(Principal principal) {
         String userName = principal.getName();
-        return userRepository.findUserByUserName(userName).orElseThrow(() -> new UsernameNotFoundException("UserName not found " + userName));
+        return userRepository.findUserByEmail(userName).orElseThrow(() -> new UsernameNotFoundException("UserName not found " + userName));
     }
 }

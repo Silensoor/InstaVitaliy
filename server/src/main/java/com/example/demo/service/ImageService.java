@@ -130,6 +130,6 @@ public class ImageService {
 
     private User getUserByPrincipal(Principal principal) {
         String userName = principal.getName();
-        return userRepository.findUserByUserName(userName).orElseThrow(() -> new UsernameNotFoundException("UserName not found " + userName));
+        return userRepository.findUserByEmail(userName).orElseThrow(() -> new UsernameNotFoundException("UserName not found " + userName));
     }
 }

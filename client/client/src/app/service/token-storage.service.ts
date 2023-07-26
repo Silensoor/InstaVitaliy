@@ -27,10 +27,7 @@ export class TokenStorageService {
   }
 
   public getUser(): any {
-    let item = sessionStorage.getItem(USER_KEY);
-    if (item != null) {
-      return JSON.parse(item);
-    }
+    return sessionStorage.getItem(USER_KEY);
   }
 
   logOut(): void {

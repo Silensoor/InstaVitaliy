@@ -25,11 +25,13 @@ export class NavigationComponent implements OnInit {
     this.isLoggedIn = !!this.tokenService.getToken();
 
     if (this.isLoggedIn) {
+      console.log("loggedIn")
       this.userService.getCurrentUser()
         .subscribe(data => {
           this.user = data;
           this.isDataLoaded = true;
         });
+      console.log("user "+this.user);
     }
   }
 

@@ -11,7 +11,7 @@ public class CommentFacade {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setId(comment.getId());
         commentDTO.setMessage(comment.getMessage());
-        commentDTO.setUserName(comment.getUserName());
+        commentDTO.setUsername(comment.getUserName());
         return commentDTO;
     }
 }

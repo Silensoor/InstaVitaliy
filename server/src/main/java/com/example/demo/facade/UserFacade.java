@@ -10,9 +10,9 @@ public class UserFacade {
     public UserDTO userToUserDTO(User user){
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
-        userDTO.setUserName(user.getUsername());
-        userDTO.setFirstName(user.getName());
-        userDTO.setLastName(user.getLastName());
+        userDTO.setUsername(user.getUsername());
+        userDTO.setFirstname(user.getName());
+        userDTO.setLastname(user.getLastName());
         userDTO.setBio(user.getBio());
         return userDTO;
     }

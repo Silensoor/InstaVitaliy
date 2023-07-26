@@ -43,8 +43,8 @@ public class UserService {
 
     public User updateUser(UserDTO userDTO, Principal principal) {
         User user = getUserByPrincipal(principal);
-        user.setName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
+        user.setName(userDTO.getFirstname());
+        user.setLastName(userDTO.getLastname());
         user.setBio(userDTO.getBio());
         return userRepository.saveAndFlush(user);
     }
@@ -55,7 +55,7 @@ public class UserService {
 
     private User getUserByPrincipal(Principal principal) {
         String userName = principal.getName();
-        return userRepository.findUserByUserName(userName).
+        return userRepository.findUserByEmail(userName).
                 orElseThrow(() -> new UsernameNotFoundException("UserName not found " + userName));
     }
 

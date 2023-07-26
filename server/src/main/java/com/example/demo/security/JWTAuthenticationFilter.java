@@ -19,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Enumeration;
 
 
 @Slf4j
@@ -54,6 +55,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     }
 
     public String getJWTFromRequest(HttpServletRequest request) {
+        Enumeration<String> headerNames = request.getHeaderNames();
         String bearToken = request.getHeader(HEADER_STRING);
         if (StringUtils.hasText(bearToken) && bearToken.startsWith(TOKEN_PREFIX)) {
             return bearToken.split(" ")[1];
