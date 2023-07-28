@@ -6,7 +6,7 @@ export interface Post {
   caption: string;
   location: string;
   image?: string;
-  likes?: number;
+  likes: number;
   usersLiked?: string[];
   comments?: Comment[];
   username?: string;

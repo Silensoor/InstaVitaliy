@@ -25,12 +25,13 @@ export class PostService {
     return this.http.get(POST_API + 'user/posts');
   }
 
-  public delete(id: number): Observable<any> {
+  public deletePost(id: number): Observable<any> {
     return this.http.post(POST_API + id + '/delete', null);
   }
 
   public likePost(id: number, username: string): Observable<any> {
     return this.http.post(POST_API + id + '/' + username + '/like', null);
   }
+
 
 }
