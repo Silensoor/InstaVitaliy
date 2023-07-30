@@ -21,6 +21,7 @@ export class ProfileComponent implements OnInit {
   selectedFile: File | any;
   userProfileImage?: File;
   previewImgUrl: any;
+  addButtonClicked = false;
 
   constructor(private tokenService: TokenStorageService,
               private postService: PostService,
@@ -31,6 +32,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.addButtonClicked = false;
     this.userService.getCurrentUser()
       .subscribe(data => {
         this.user = data;
@@ -77,5 +79,10 @@ export class ProfileComponent implements OnInit {
         });
     }
   }
-
+  onAddButtonClick() {
+    this.addButtonClicked = true;
+  }
+  onAddButtonClick2() {
+    this.addButtonClicked = false;
+  }
 }

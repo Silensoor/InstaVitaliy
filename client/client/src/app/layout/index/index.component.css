@@ -1,18 +1,77 @@
-.index-page{
-  display: block;
-  margin: 0 auto;
-  width: 60%;
-  padding-top: 3rem;
+.index-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
 }
 
-.post-card{
-  display: block;
-  margin: 2rem auto;
-  width: 80%;
+.post-card {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 40%;
+
 }
-.is-liked{
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+
+
+.location {
+  margin-right: 1rem;
+  align-self: flex-end;
+}
+
+.like-button {
+  align-self: flex-end;
+}
+
+.poster {
+  align-self: flex-start;
+}
+
+.comments-section {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 1rem;
+}
+
+.post-card img {
+  object-fit: cover; /* Cover the whole area */
+  height: 200px; /* Set a fixed height */
+  width: 100%; /* Set width to full */
+
+}
+
+.is-liked {
   color: darkred;
 }
-.not-liked{
+
+.not-liked {
   color: grey;
 }
+.mat-mdc-button.is-liked:not(:disabled) {
+  color: red;
+}
+
+.mat-mdc-button.not-liked:not(:disabled) {
+  color: grey;
+}
+
+.title-caption {
+  margin-top: 1rem; /* Set margin-top to 0 */
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+  align-self: flex-start;
+  text-align: center;
+}
+.profile-image{
+  border-radius: 50%;
+  /* You can adjust this as needed */
+  transform: scale(0.7);
+  margin-top: 0; /* Remove margin at the top of the profile image */
+}
+

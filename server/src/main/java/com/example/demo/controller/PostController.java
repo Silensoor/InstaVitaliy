@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,6 +25,7 @@ public class PostController {
     private final PostFacade postFacade;
     private final PostService postService;
     private final ResponseErrorValidation errorValidation;
+
 
     @PostMapping("/create")
     public ResponseEntity<Object> createPost(@Valid @RequestBody PostDTO postDTO, BindingResult bindingResult, Principal principal) {
@@ -36,11 +38,8 @@ public class PostController {
 
     @GetMapping("/all")
     public ResponseEntity<List<PostDTO>> getAllPosts() {
-        List<PostDTO> posts = postService.getAllPosts()
-                .stream()
-                .map(postFacade::postToPostDTO)
-                .toList();
-        return new ResponseEntity<>(posts, HttpStatus.OK);
+        List<PostDTO> allPosts = postService.getAllPosts();
+        return new ResponseEntity<>(allPosts, HttpStatus.OK);
     }
 
     @GetMapping("/user/posts")

@@ -22,7 +22,13 @@
       <p>{{user?.bio}}</p>
     </div>
     <mat-divider style="margin: 2rem 0"></mat-divider>
-    <router-outlet></router-outlet>
+    <div>
+      <button *ngIf="!addButtonClicked" mat-flat-button color="primary" routerLink="/profile/add" (click)="onAddButtonClick()">Add Post</button>
+
+    </div>
+    <div class="router-outlet-wrapper">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 
 </div>

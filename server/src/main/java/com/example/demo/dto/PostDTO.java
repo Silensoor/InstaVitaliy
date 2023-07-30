@@ -1,5 +1,7 @@
 package com.example.demo.dto;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Lob;
 import lombok.Data;
 
 import java.util.Set;
@@ -13,5 +15,7 @@ public class PostDTO {
     private String location;
     private String username;
     private Integer likes;
-    private Set<String> usersLikes;
+    private Set<String> usersLiked;
+    private byte[] imagePerson;
+
 }

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {Post} from "../models/Post";
 
 const IMAGE_API = 'http://localhost:8080/api/image/'
 
@@ -30,5 +31,11 @@ export class ImageUploadService {
 
   public getImageToPost(postId: number): Observable<any> {
     return this.http.get(IMAGE_API + postId + '/image');
+  }
+
+  public getImageProfileToPost(post: any): Observable<any> {
+    let postId = post;
+    console.log(postId);
+    return this.http.get(IMAGE_API + postId + '/image/profiles');
   }
 }

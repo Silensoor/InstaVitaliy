@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.ImageDTO;
 import com.example.demo.entity.ImageModel;
 import com.example.demo.entity.Post;
 import com.example.demo.entity.User;
@@ -17,8 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Optional;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -85,16 +86,17 @@ public class ImageService {
 
     }
 
-    public ImageModel uploadImageToPost(MultipartFile file, Principal principal, Long postId) throws IOException {
+    public void uploadImageToPost(MultipartFile file, Principal principal, Long postId) throws IOException {
         User user = getUserByPrincipal(principal);
-        Post post = user.getPosts()
-                .stream().filter(p -> p.getId().equals(postId)).collect(toSinglePostCollectors());
+        List<Post> posts = user.getPosts()
+                .stream().filter(p -> p.getId().equals(postId)).toList();
+
         ImageModel imageModel = new ImageModel();
-        imageModel.setPostId(post.getId());
+        imageModel.setPostId(posts.isEmpty() ? null : posts.get(0).getId());
         imageModel.setImageBytes(compressBytes(file.getBytes()));
         imageModel.setName(file.getOriginalFilename());
-        log.info("Uploading image to Post {}", post.getId());
-        return imageRepository.saveAndFlush(imageModel);
+        log.info("Uploading image to Post {}", posts.isEmpty() ? null : posts.get(0).getId());
+        imageRepository.saveAndFlush(imageModel);
     }
 
     public ImageModel getImageToUser(Principal principal) {
@@ -116,20 +118,20 @@ public class ImageService {
     }
 
 
-    private <T> Collector<T, ?, T> toSinglePostCollectors() {
-        return Collectors.collectingAndThen(
-                Collectors.toList(),
-                list -> {
-                    if (list.size() != 1) {
-                        throw new IllegalStateException();
-                    }
-                    return list.get(0);
-                }
-        );
-    }
-
     private User getUserByPrincipal(Principal principal) {
         String userName = principal.getName();
         return userRepository.findUserByEmail(userName).orElseThrow(() -> new UsernameNotFoundException("UserName not found " + userName));
+    }
+
+    public ImageDTO getImageProfileByPost(Long id) {
+        Optional<Post> byId = postRepository.findById(id);
+        ImageDTO imageDTO = new ImageDTO();
+        if (byId.isPresent()) {
+            Optional<ImageModel> byUserId = imageRepository.findByUserId(byId.get().getUser().getId());
+            imageDTO.setImageBytes(decompressBytes(byUserId.get().getImageBytes()));
+            imageDTO.setId(id);
+        }
+        return imageDTO;
+
     }
 }

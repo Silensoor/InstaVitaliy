@@ -1,6 +1,10 @@
 server:
   port: 8080
 spring:
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 30MB
   jpa:
     hibernate:
       ddl-auto: update
@@ -17,3 +21,4 @@ jwt:
   header-string: Authorization
   content-type: application/json
   expiration-time: 600_000_000
+instavitaliy.api.key: AIzaSyAvaVDPCHE09dxeVQkIQ3xp_m2Ydg446zY

@@ -25,7 +25,6 @@ public class Post {
     private String caption;
     private String location;
     private Integer likes;
-
     @ElementCollection(targetClass = String.class)
     private Set<String> likedUsers = new HashSet<>();
     @ManyToOne(fetch = FetchType.LAZY)

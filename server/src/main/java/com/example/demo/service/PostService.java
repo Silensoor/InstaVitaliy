@@ -5,6 +5,7 @@ import com.example.demo.entity.ImageModel;
 import com.example.demo.entity.Post;
 import com.example.demo.entity.User;
 import com.example.demo.exceptions.PostNotFoundException;
+import com.example.demo.facade.PostFacade;
 import com.example.demo.repository.ImageRepository;
 import com.example.demo.repository.PostRepository;
 import com.example.demo.repository.UserRepository;
@@ -13,9 +14,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.zip.DataFormatException;
+import java.util.zip.Inflater;
 
 @Service
 @Slf4j
@@ -25,6 +31,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
+    private final PostFacade postFacade;
 
     public Post createPost(PostDTO postDTO, Principal principal) {
         User user = getUserByPrincipal(principal);
@@ -34,12 +41,25 @@ public class PostService {
         post.setLocation(postDTO.getLocation());
         post.setTitle(postDTO.getTitle());
         post.setLikes(0);
+        user.getPosts().add(post);
         log.info("Saving Post for User: {} ", user.getEmail());
         return postRepository.saveAndFlush(post);
     }
 
-    public List<Post> getAllPosts() {
-        return postRepository.findAllByOrderByCreatedDateDesc();
+    public List<PostDTO> getAllPosts() {
+        List<Post> posts = postRepository.findAll();
+        List<PostDTO> postDTOS = new ArrayList<>();
+        for (Post post : posts) {
+            PostDTO postDTO = postFacade.postToPostDTO(post);
+
+            Optional<ImageModel> byUserId = imageRepository.findByUserId(post.getUser().getId());
+            if (byUserId.isPresent()) {
+                postDTO.setImagePerson(decompressBytes(byUserId.get().getImageBytes()));
+            }
+            postDTOS.add(postDTO);
+        }
+        return postDTOS;
+
     }
 
     public List<Post> getAllPostForUser(Principal principal) {
@@ -60,10 +80,20 @@ public class PostService {
         return postRepository.saveAndFlush(post);
     }
 
-    public void deletePost(Long postId,Principal principal){
-        Post post = getPostById(postId,principal);
-        Optional<ImageModel> imageModel = imageRepository.findByPostId(post.getId());
-        postRepository.delete(post);
+    public void deletePost(Long postId, Principal principal) {
+        Optional<User> user = userRepository.findUserByEmail(principal.getName());
+        if (user.isPresent()) {
+            Post post = getPostById(postId, principal);
+            Optional<ImageModel> imageModel = imageRepository.findByPostId(post.getId());
+            if (imageModel.isPresent()) {
+                List<Post> posts = user.get().getPosts();
+                posts.remove(post);
+                user.get().setPosts(posts);
+                userRepository.saveAndFlush(user.get());
+                postRepository.delete(post);
+                imageRepository.delete(imageModel.get());
+            }
+        }
         log.info("Post deleted");
     }
 
@@ -79,5 +109,21 @@ public class PostService {
         return userRepository.findUserByEmail(userName).orElseThrow(() -> new UsernameNotFoundException("UserName not found " + userName));
     }
 
+    private static byte[] decompressBytes(byte[] data) {
+        Inflater inflater = new Inflater();
+        inflater.setInput(data);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+        byte[] buffer = new byte[1024];
+        try {
+            while (!inflater.finished()) {
+                int count = inflater.inflate(buffer);
+                outputStream.write(buffer, 0, count);
+            }
+            outputStream.close();
+        } catch (IOException | DataFormatException e) {
+            log.error("Cannot decompress Bytes");
+        }
+        return outputStream.toByteArray();
+    }
 
 }

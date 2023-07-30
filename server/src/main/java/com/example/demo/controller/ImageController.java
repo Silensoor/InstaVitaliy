@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ImageDTO;
 import com.example.demo.entity.ImageModel;
 import com.example.demo.payload.response.MessageResponse;
 import com.example.demo.service.ImageService;
@@ -45,4 +46,9 @@ public class ImageController {
         return new ResponseEntity<>(postImage, HttpStatus.OK);
     }
 
+    @GetMapping("/{postId}/image/profiles")
+    public ResponseEntity<ImageDTO> getImageProfileByPost(@PathVariable("postId") String postId) {
+        ImageDTO profileImage = imageService.getImageProfileByPost(Long.parseLong(postId));
+        return new ResponseEntity<>(profileImage, HttpStatus.OK);
+    }
 }

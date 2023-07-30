@@ -22,6 +22,7 @@ public class ImageModel {
     @Column(columnDefinition = "BIGINT")
     private byte[] imageBytes;
     @JsonIgnore
+    @Column(unique = true)
     private Long userId;
     @JsonIgnore
     private Long postId;

@@ -1,0 +1,45 @@
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem; /* creates space between inputs */
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.mat-form-field {
+  width: 100%; /* make sure inputs take full width */
+}
+
+.row {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+button {
+  margin-top: 2rem; /* add some space above the buttons */
+  padding: 0.5rem 2rem; /* make buttons larger */
+  font-size: 1rem; /* make button text larger */
+}
+
+button.mat-primary {
+  background-color: #3f51b5; /* or any color you prefer */
+  color: white;
+}
+
+button.mat-button {
+  background-color: #f8f8f8; /* or any color you prefer */
+  color: #333;
+}
+
+button.mat-primary:hover {
+  background-color: #5c6bc0; /* or any other color you prefer */
+}

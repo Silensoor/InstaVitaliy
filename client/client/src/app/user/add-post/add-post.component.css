@@ -1,0 +1,29 @@
+div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+h2 {
+  text-align: center;
+  color: #3f51b5;
+  margin-bottom: 2rem;
+}
+
+.post-image {
+  height: 300px;
+  width: 300px;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.button-post, .button-post1 {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.mat-form-field {
+  width: 100%;
+  margin-top: 1rem;
+}

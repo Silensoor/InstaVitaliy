@@ -16,6 +16,7 @@ import { ProfileComponent } from './user/profile/profile.component';
 import { UserPostsComponent } from './user/user-posts/user-posts.component';
 import { AddPostComponent } from './user/add-post/add-post.component';
 import { EditUserComponent } from './user/edit-user/edit-user.component';
+import { LikesDialogComponentComponent } from './user/likes-dialog-component/likes-dialog-component.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { EditUserComponent } from './user/edit-user/edit-user.component';
     UserPostsComponent,
     EditUserComponent,
     AddPostComponent,
-    EditUserComponent
+    EditUserComponent,
+    LikesDialogComponentComponent
   ],
   imports: [
     BrowserModule,

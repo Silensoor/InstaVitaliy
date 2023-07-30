@@ -4,6 +4,8 @@ import {PostService} from "../../service/post.service";
 import {ImageUploadService} from "../../service/image-upload.service";
 import {CommentService} from "../../service/comment.service";
 import {NotificationService} from "../../service/notification.service";
+import {MatDialog} from "@angular/material/dialog";
+import {LikesDialogComponentComponent} from "../likes-dialog-component/likes-dialog-component.component";
 
 @Component({
   selector: 'app-user-posts',
@@ -12,17 +14,19 @@ import {NotificationService} from "../../service/notification.service";
 })
 export class UserPostsComponent implements OnInit {
 
-
+  openedCommentsIndex: number | null = null;
   isLUserPostsLoaded = false;
   posts!: Post[];
 
   constructor(private postService: PostService,
               private imageService: ImageUploadService,
               private commentService: CommentService,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
+
     this.postService.getPostForCurrentUser()
       .subscribe(data => {
         console.log(data);
@@ -31,23 +35,29 @@ export class UserPostsComponent implements OnInit {
         this.getCommentsToPosts(this.posts);
         this.isLUserPostsLoaded = true;
       });
+
+
   }
 
   getImagesToPosts(posts: Post[]): void {
     posts.forEach(p => {
-      this.imageService.getImageToPost(p.id)
-        .subscribe(data => {
-          p.image = data.imageBytes;
-        });
+      if (p.id != null) {
+        this.imageService.getImageToPost(p.id)
+          .subscribe(data => {
+            p.image = data.imageBytes;
+          });
+      }
     });
   }
 
   getCommentsToPosts(posts: Post[]): void {
     posts.forEach(p => {
-      this.commentService.getCommentsToPost(p.id)
-        .subscribe(data => {
-          p.comments = data;
-        });
+      if (p.id != null) {
+        this.commentService.getCommentsToPost(p.id)
+          .subscribe(data => {
+            p.comments = data;
+          });
+      }
     });
   }
 
@@ -55,11 +65,13 @@ export class UserPostsComponent implements OnInit {
     console.log(post);
     const resullt = confirm('Do you really want to delete this post?');
     if (resullt) {
-      this.postService.deletePost(post.id)
-        .subscribe(() => {
-          this.posts?.slice(index, 1);
-          this.notificationService.showSnackBar("Post deleted");
-        });
+      if (post.id != null) {
+        this.postService.deletePost(post.id)
+          .subscribe(() => {
+            this.posts?.splice(index, 1);
+            this.notificationService.showSnackBar("Post deleted");
+          });
+      }
     }
   }
 
@@ -71,11 +83,27 @@ export class UserPostsComponent implements OnInit {
   }
 
   deleteComment(commentId: number, postIndex: number, commentIndex: number): void {
-    const post = this.posts[postIndex];
+
     this.commentService.delete(commentId)
       .subscribe(() => {
+        this.posts[postIndex].comments!.splice(commentIndex, 1);
         this.notificationService.showSnackBar('Comment removed');
-        post.comments?.slice(commentIndex, 1);
+
       });
+  }
+
+  toggleComments(i: number): void {
+    if (this.openedCommentsIndex === i) {
+      this.openedCommentsIndex = null;
+    } else {
+      this.openedCommentsIndex = i;
+    }
+  }
+
+  openDialog(usersLiked: string[]): void {
+    const dialogRef = this.dialog.open(LikesDialogComponentComponent, {
+      width: '250px',
+      data: {users: usersLiked}
+    });
   }
 }
