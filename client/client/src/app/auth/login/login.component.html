@@ -19,11 +19,13 @@
           Login
         </button>
         <a routerLink="/register">Register</a>
-        <a class="btn text-white" style="background-color: #dd4b39;" href="#!" role="button">
-          <i class="fab fa-google"></i>
-        </a>
       </div>
-
+      <div class="button-google">
+        <p>Войти с помощью:</p>
+        <button class="google-button" (click)="oauthGoogle()">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Google_Logo.svg/2560px-Google_Logo.svg.png" alt="Google Logo">
+        </button>
+      </div>
     </div>
   </form>
 </div>

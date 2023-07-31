@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../service/auth.service";
 import {TokenStorageService} from "../../service/token-storage.service";
 import {NotificationService} from "../../service/notification.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -18,21 +18,35 @@ export class LoginComponent implements OnInit {
               private tokenService: TokenStorageService,
               private notificationService: NotificationService,
               private router: Router,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private routes: ActivatedRoute) {
     if (this.tokenService.getToken()) {
       this.router.navigate(['main']);
     }
   }
 
   ngOnInit(): void {
+    this.routes.queryParams.subscribe(params => {
+      console.log('ПАРАМЕТРЫ ' + params);
+      const jwt = params['jwt'];
+      if (jwt) {
+        this.tokenService.saveUser(params);
+        this.tokenService.saveToken(jwt);
+        window.location.reload();
+      }
+    });
     this.loginForm = this.createLoginForm();
   }
 
   createLoginForm(): FormGroup {
     return this.fb.group({
-      username: ['', Validators.compose([Validators.required,Validators.email])],
+      username: ['', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.compose([Validators.required])]
     })
+  }
+
+  oauthGoogle(): void {
+    this.authService.oauthAuthorization();
   }
 
   submit(): void {

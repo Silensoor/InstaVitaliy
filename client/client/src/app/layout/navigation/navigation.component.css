@@ -5,3 +5,7 @@
   display: block;
   margin: 0 auto;
 }
+.black-toolbar {
+  background: rgba(0, 0, 0, 0.7);  /* 50% прозрачность */
+  color: white;
+}

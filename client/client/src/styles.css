@@ -1,5 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
-
 html,body{height: 100%;}
 body{margin: 0;font-family: Roboto, "Helvetica Neue",sans-serif;}
 
@@ -11,24 +9,26 @@ body{margin: 0;font-family: Roboto, "Helvetica Neue",sans-serif;}
 .mat-form-field-appearance-outline .mat-form-field-can-float .mat-form-field-should-float .mat-form-field-outline-gap{
   border-top-color: currentColor !important;
 }
+
+
 .app-background {
-  min-height: 100vh;
+  min-height: 100%;
   width: 100%;
-  background-image: linear-gradient(65deg, #358177 0%, #40d0d5 100%);
+  background-image: linear-gradient(rgba(101, 97, 97, 0.4), rgba(44, 43, 43, 0.4));
   background-size: 200% 200%;
-  animation: Gradient 2s ease infinite;
-
+  position: relative;
+}
+.app-background::before{
+  min-height: 100%;
+  width: 100%;
+  content: '';
+  position: absolute;
+  background: inherit;
+  filter: blur(10px);
+  pointer-events: none;
 }
 
-@keyframes Gradient {
-  0% {
-    background-position: 0 50%
-  }
-  50% {
-    background-position: 100% 50%
-  }
-  100% {
-    background-position: 0 50%
-  }
-}
+
+
+
 

@@ -11,6 +11,10 @@ import com.example.demo.repository.PostRepository;
 import com.example.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -46,21 +50,21 @@ public class PostService {
         return postRepository.saveAndFlush(post);
     }
 
-    public List<PostDTO> getAllPosts() {
-        List<Post> posts = postRepository.findAll();
+    public List<PostDTO> getAllPosts(Integer page) {
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdDate"));
+        Page<Post> posts = postRepository.findAllByOrderByCreatedDateDesc(pageable);
+
         List<PostDTO> postDTOS = new ArrayList<>();
-        for (Post post : posts) {
+        for (Post post : posts.getContent()) {
             PostDTO postDTO = postFacade.postToPostDTO(post);
 
             Optional<ImageModel> byUserId = imageRepository.findByUserId(post.getUser().getId());
-            if (byUserId.isPresent()) {
-                postDTO.setImagePerson(decompressBytes(byUserId.get().getImageBytes()));
-            }
+            byUserId.ifPresent(imageModel -> postDTO.setImagePerson(decompressBytes(imageModel.getImageBytes())));
             postDTOS.add(postDTO);
         }
         return postDTOS;
-
     }
+
 
     public List<Post> getAllPostForUser(Principal principal) {
         User user = getUserByPrincipal(principal);
@@ -79,7 +83,13 @@ public class PostService {
         }
         return postRepository.saveAndFlush(post);
     }
+    public List<Post> getPostsForUser(String username){
+        User user = userRepository.findUserByEmail(username)
+                .orElse(userRepository.findUserByUserName(username)
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found with username or email: " + username)));
+       return postRepository.findAllByUserOrderByCreatedDateDesc(user);
 
+    }
     public void deletePost(Long postId, Principal principal) {
         Optional<User> user = userRepository.findUserByEmail(principal.getName());
         if (user.isPresent()) {

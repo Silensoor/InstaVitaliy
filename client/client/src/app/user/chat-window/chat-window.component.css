@@ -1,0 +1,5 @@
+.chat-window {
+  width: 70%;
+  background: #fff;
+  overflow-y: scroll;
+}

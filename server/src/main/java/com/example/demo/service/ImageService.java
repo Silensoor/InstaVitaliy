@@ -33,6 +33,7 @@ public class ImageService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
 
+
     private byte[] compressBytes(byte[] data) {
         Deflater deflater = new Deflater();
         deflater.setInput(data);
@@ -68,6 +69,18 @@ public class ImageService {
             log.error("Cannot decompress Bytes");
         }
         return outputStream.toByteArray();
+    }
+
+    public ImageModel getImageForPostUser(String username) {
+        User user = userRepository.findUserByEmail(username)
+                .orElse(userRepository.findUserByUserName(username)
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found with username or email: " + username)));
+
+        ImageModel imageModel = imageRepository.findByUserId(user.getId()).orElse(null);
+        if (imageModel != null) {
+            imageModel.setImageBytes(decompressBytes(imageModel.getImageBytes()));
+        }
+        return imageModel;
     }
 
     public ImageModel uploadImageToUser(MultipartFile file, Principal principal) throws IOException {

@@ -11,3 +11,20 @@
 mat-form-field{
   width: 50%;
 }
+.google-button {
+  border: none;
+  cursor: pointer;
+  background: none; /* Убедитесь, что фон кнопки прозрачный */
+  width: 200px;  /* Укажите желаемый размер кнопки */
+  height: 50px; /* Укажите желаемый размер кнопки */
+  transition: 0.3s; /* Это время анимации */
+}
+
+.google-button img {
+  width: 100%;
+  height: 100%;
+}
+
+.google-button:hover {
+  box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Это создает подсветку вокруг кнопки при наведении */
+}

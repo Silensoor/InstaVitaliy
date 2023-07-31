@@ -17,6 +17,14 @@ import { UserPostsComponent } from './user/user-posts/user-posts.component';
 import { AddPostComponent } from './user/add-post/add-post.component';
 import { EditUserComponent } from './user/edit-user/edit-user.component';
 import { LikesDialogComponentComponent } from './user/likes-dialog-component/likes-dialog-component.component';
+import {CdkFixedSizeVirtualScroll, CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
+import { ChatComponent } from './user/chat/chat.component';
+import { ChatListComponent } from './user/chat-list/chat-list.component';
+import { ChatWindowComponent } from './user/chat-window/chat-window.component';
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { UserProfileComponent } from './user/user-profile/user-profile.component';
+import { UsersPostsComponent } from './user/users-posts/users-posts.component';
 
 
 @NgModule({
@@ -31,7 +39,12 @@ import { LikesDialogComponentComponent } from './user/likes-dialog-component/lik
     EditUserComponent,
     AddPostComponent,
     EditUserComponent,
-    LikesDialogComponentComponent
+    LikesDialogComponentComponent,
+    ChatComponent,
+    ChatListComponent,
+    ChatWindowComponent,
+    UserProfileComponent,
+    UsersPostsComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +53,10 @@ import { LikesDialogComponentComponent } from './user/likes-dialog-component/lik
     MaterialModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    CdkFixedSizeVirtualScroll,
+    InfiniteScrollModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     {multi: true, provide:HTTP_INTERCEPTORS,useClass:fwcAPIInterceptor},

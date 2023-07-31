@@ -1,58 +1,105 @@
+body {
+  background: #f5f7fa;
+  font-family: Arial, sans-serif;
+}
+
 .index-page {
   display: flex;
   flex-direction: column;
   align-items: center;
-
 }
 
 .post-card {
   margin-top: 1rem;
   margin-bottom: 1rem;
   width: 40%;
+  border-radius: 15px;
+  overflow: hidden;
+  background: rgb(175, 172, 172);
+  box-shadow:  20px 20px 60px rgba(4, 4, 10, 0.5), -20px -20px 60px rgba(60, 60, 61, 0.5);
+  transition: transform .2s;
+}
 
+.post-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
 .card-header {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
+  padding: 1rem;
 }
 
-
+.header-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 1rem;
+}
 
 .location {
-  margin-right: 1rem;
   align-self: flex-end;
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #3f51b5;
+  transition: color .3s ease-in-out;
 }
 
-.like-button {
-  align-self: flex-end;
+.location:hover {
+  color: #1565c0;
 }
 
 .poster {
   align-self: flex-start;
+  width: 100%;
+  text-align: left;
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #3f51b5;
+  cursor: pointer;
+  transition: color .3s ease-in-out;
 }
 
-.comments-section {
-  max-height: 200px;
-  overflow-y: auto;
-  margin-top: 1rem;
+.poster:hover {
+  color: #1565c0;
+}
+
+.title-caption {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 1rem;
+  gap: 1rem;
+}
+
+.title-caption p {
+  margin: 0;
+  font-weight: 500;
+  color: #333;
+}
+
+.profile-image {
+  border-radius: 50%;
+  width: 200px !important;
+  height: 200px !important;
+  object-fit: cover;
+  margin-right: 1rem;
+  cursor: pointer;
+  transition: transform .3s ease-in-out;
+}
+
+.profile-image:hover {
+  transform: scale(1.05);
 }
 
 .post-card img {
-  object-fit: cover; /* Cover the whole area */
-  height: 200px; /* Set a fixed height */
-  width: 100%; /* Set width to full */
-
+  object-fit: cover;
+  width: 100%;
 }
 
-.is-liked {
-  color: darkred;
-}
-
-.not-liked {
-  color: grey;
-}
 .mat-mdc-button.is-liked:not(:disabled) {
   color: red;
 }
@@ -61,17 +108,21 @@
   color: grey;
 }
 
-.title-caption {
-  margin-top: 1rem; /* Set margin-top to 0 */
-  margin-left: 1rem;
-  margin-bottom: 1rem;
-  align-self: flex-start;
-  text-align: center;
-}
-.profile-image{
-  border-radius: 50%;
-  /* You can adjust this as needed */
-  transform: scale(0.7);
-  margin-top: 0; /* Remove margin at the top of the profile image */
+.mat-form-field {
+  width: 90%;
+  margin: 1rem auto;
+  background-color: #f3f3f3;
+  border-radius: 5px;
 }
 
+.example-viewport {
+  height: 150px;
+  width: 100%;
+  border: 1px solid black;
+  overflow-y: auto;
+}
+
+.scrollable {
+  max-height: 200px;
+  overflow-y: auto;
+}

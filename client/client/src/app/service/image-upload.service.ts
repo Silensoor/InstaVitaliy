@@ -29,13 +29,13 @@ export class ImageUploadService {
     return this.http.get(IMAGE_API + 'profileImage');
   }
 
+  public getProfileImageByUserName(username: any): Observable<any> {
+    return this.http.get(IMAGE_API + username);
+  }
+
+
   public getImageToPost(postId: number): Observable<any> {
     return this.http.get(IMAGE_API + postId + '/image');
   }
 
-  public getImageProfileToPost(post: any): Observable<any> {
-    let postId = post;
-    console.log(postId);
-    return this.http.get(IMAGE_API + postId + '/image/profiles');
-  }
 }

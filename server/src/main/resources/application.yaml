@@ -1,6 +1,17 @@
 server:
   port: 8080
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 570528415798-hbkv3j8rhueeve0doa641k8bmrf2ge32.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            scope:
+              - email
+
   servlet:
     multipart:
       max-file-size: 20MB
@@ -21,4 +32,8 @@ jwt:
   header-string: Authorization
   content-type: application/json
   expiration-time: 600_000_000
-instavitaliy.api.key: AIzaSyAvaVDPCHE09dxeVQkIQ3xp_m2Ydg446zY
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

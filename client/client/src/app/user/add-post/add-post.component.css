@@ -17,7 +17,12 @@ h2 {
   object-fit: cover;
   margin-bottom: 1rem;
 }
+mat-divider {
 
+  width: 100%; /* Установка ширины линии */
+  border-top: 1px solid rgba(0, 0, 0, 0.4); /* Установка цвета и толщины линии */
+  /* Добавлен отступ снизу */
+}
 .button-post, .button-post1 {
   margin-top: 1rem;
   width: 100%;

@@ -13,6 +13,8 @@
            (change)="onFileSelected($event)">
 
     <button class="button-post" color="accent" mat-flat-button mat-button (click)="fileInput.click()">Pick File</button>
+
+    <mat-divider style="margin: 2rem 0"></mat-divider>
     <mat-form-field class="w-100" appearance="outline">
       <mat-label>Title</mat-label>
       <input matInput formControlName="title">

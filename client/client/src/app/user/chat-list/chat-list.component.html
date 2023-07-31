@@ -1,0 +1,6 @@
+<div class="chat-list">
+  <div *ngFor="let chat of chats" class="chat-list-item" (click)="selectChat(chat)">
+    <div class="chat-user">{{chat.user}}</div>
+    <div class="chat-last-message">{{chat.lastMessage}}</div>
+  </div>
+</div>
