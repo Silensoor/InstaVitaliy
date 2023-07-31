@@ -19,6 +19,12 @@ import java.security.Principal;
 public class ImageController {
     private final ImageService imageService;
 
+    @GetMapping("/{username}")
+    public ResponseEntity<ImageModel> getImageForPostUser(@PathVariable String username) {
+        ImageModel imageForPostUser = imageService.getImageForPostUser(username);
+        return new ResponseEntity<>(imageForPostUser, HttpStatus.OK);
+    }
+
     @PostMapping("/upload")
     public ResponseEntity<MessageResponse> uploadImageToUser(@RequestParam("file") MultipartFile file,
                                                              Principal principal) throws IOException {

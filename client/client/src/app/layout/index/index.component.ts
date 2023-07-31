@@ -6,6 +6,7 @@ import {UserService} from "../../service/user.service";
 import {CommentService} from "../../service/comment.service";
 import {NotificationService} from "../../service/notification.service";
 import {ImageUploadService} from "../../service/image-upload.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-index',
@@ -15,39 +16,53 @@ import {ImageUploadService} from "../../service/image-upload.service";
 export class IndexComponent implements OnInit {
 
   posts!: Post[];
-  isPostsLoaded = false;
+  isLoading = false;
   isUserDataLoaded = false;
   user!: User;
   showAllComments: boolean[] = [];
   commentText: string[] = [];
-  myPhoto!: Map<string, any>;
+  page = 0;
 
 
   constructor(private postService: PostService,
               private userService: UserService,
               private commentService: CommentService,
               private notificationService: NotificationService,
-              private imageService: ImageUploadService) {
+              private imageService: ImageUploadService,
+              private router:Router) {
   }
 
   ngOnInit(): void {
-    this.postService.getAllPosts()
-      .subscribe(data => {
-        console.log(data);
-        this.posts = data;
-        this.getCommentsToPosts(this.posts);
-        this.getImageToPosts(this.posts);
-        this.isPostsLoaded = true;
-        this.commentText = Array(this.posts.length).fill('');
-      });
-    console.log("POSTS " + this.posts)
+    this.loadMorePosts();
     this.userService.getCurrentUser()
       .subscribe(data => {
         this.user = data;
         this.isUserDataLoaded = true;
-        console.log("CurrentUser " + this.user)
       });
+  }
 
+  loadMorePosts(): void {
+    if (!this.isLoading) {
+      this.isLoading = true;
+      this.postService.getAllPosts(this.page)
+        .subscribe(data => {
+          this.posts = this.posts ? [...this.posts, ...data] : [...data];
+          this.getCommentsToPosts(data);
+          this.getImageToPosts(data);
+          this.isLoading = false;
+          this.page++;
+          this.commentText = Array(this.posts.length).fill('');
+        });
+    }
+  }
+
+  navigateToProfile(username: any) {
+    if (username === this.user.username) {
+
+      this.router.navigate(['/profile']);
+    } else {
+      this.router.navigate(['/user-profile', username]);
+    }
   }
 
   getImageToPosts(posts: Post[]): void {

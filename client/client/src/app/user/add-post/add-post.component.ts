@@ -47,6 +47,7 @@ export class AddPostComponent implements OnInit {
       caption: this.postForm.value.caption,
       location: this.postForm.value.location
     }
+
     this.postService.createPost(post).subscribe(data => {
       this.createdPost = data;
       console.log(data);
@@ -57,7 +58,7 @@ export class AddPostComponent implements OnInit {
           () => {
             this.notificationService.showSnackBar('Post created successfully'
             );
-            this.isPostCreated = true;
+            this.onAddButtonClick();
             this.router.navigate(['/profile']);
           });
       }

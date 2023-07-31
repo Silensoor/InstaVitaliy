@@ -37,8 +37,16 @@ public class UserService {
             log.error("Error during registration {}", e.getMessage());
             throw new UserExistException("The user " + user.getUsername() + " already exist. Please check credentials");
         }
+    }
+    public void saveUserGoogle(User user){
+        userRepository.saveAndFlush(user);
+    }
 
-
+    public User findUserByEmail(String email) {
+       return userRepository.findUserByEmail(email).orElse(null);
+    }
+    public User findUserByUserName(String userName){
+        return userRepository.findUserByUserName(userName).orElse(null);
     }
 
     public User updateUser(UserDTO userDTO, Principal principal) {

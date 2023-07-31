@@ -36,9 +36,9 @@ public class PostController {
         return new ResponseEntity<>(createdPost, HttpStatus.OK);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<PostDTO>> getAllPosts() {
-        List<PostDTO> allPosts = postService.getAllPosts();
+    @GetMapping("/all/{page}")
+    public ResponseEntity<List<PostDTO>> getAllPosts(@PathVariable String page) {
+        List<PostDTO> allPosts = postService.getAllPosts(Integer.parseInt(page));
         return new ResponseEntity<>(allPosts, HttpStatus.OK);
     }
 
@@ -54,14 +54,22 @@ public class PostController {
     @PostMapping("/{postId}/{username}/like")
     public ResponseEntity<PostDTO> likePost(@PathVariable("postId") String postId,
                                             @PathVariable("username") String username) {
-        Post post = postService.likePost(Long.parseLong(postId),username);
+        Post post = postService.likePost(Long.parseLong(postId), username);
         PostDTO postDTO = postFacade.postToPostDTO(post);
-        return  new ResponseEntity<>(postDTO,HttpStatus.OK);
+        return new ResponseEntity<>(postDTO, HttpStatus.OK);
     }
+
     @PostMapping("/{postId}/delete")
-    public ResponseEntity<MessageResponse>deletePost(@PathVariable("postId")String postId,Principal principal){
-        postService.deletePost(Long.parseLong(postId),principal);
-        return new ResponseEntity<>(new MessageResponse("Post was deleted"),HttpStatus.OK);
+    public ResponseEntity<MessageResponse> deletePost(@PathVariable("postId") String postId, Principal principal) {
+        postService.deletePost(Long.parseLong(postId), principal);
+        return new ResponseEntity<>(new MessageResponse("Post was deleted"), HttpStatus.OK);
+    }
+
+    @GetMapping("/{username}")
+    public ResponseEntity<List<PostDTO>> getPostsForUser(@PathVariable String username) {
+        List<Post> post = postService.getPostsForUser(username);
+        List<PostDTO> postDTO = post.stream().map(postFacade::postToPostDTO).toList();
+        return new ResponseEntity<>(postDTO, HttpStatus.OK);
     }
 
 

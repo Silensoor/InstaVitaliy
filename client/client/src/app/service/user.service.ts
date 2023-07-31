@@ -23,5 +23,8 @@ export class UserService {
   public updateUser(user: any): Observable<any> {
     return this.http.post(USER_API + 'update', user);
   }
+  public getUserByUserName(username:any):Observable<any>{
+    return this.http.get(USER_API+'username/'+username);
+  }
 
 }

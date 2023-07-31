@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar class="black-toolbar">
   <span routerLink="/main" style="cursor: pointer;margin-left: 20px;">VitaliyInsta</span>
 
   <span class="spacer"></span>
@@ -12,7 +12,9 @@
   <button *ngIf="isLoggedIn" [matMenuTriggerFor]="menu" matTooltip="Profile" mat-icon-button>
     <mat-icon color="accent">account_box</mat-icon>
   </button>
-
+  <button *ngIf="isLoggedIn" matTooltip="Messages" routerLink="/chat" mat-icon-button>
+    <mat-icon color="accent">message</mat-icon>
+  </button>
   <mat-menu id="menu-item" #menu="matMenu">
     <button mat-menu-item routerLink="/profile">Profile</button>
     <button (click)="logout()" mat-menu-item>Logout</button>

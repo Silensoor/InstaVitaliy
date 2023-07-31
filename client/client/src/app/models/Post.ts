@@ -11,4 +11,5 @@ export interface Post {
   comments?: Comment[];
   username?: string;
   imagePerson?:string;
+  email?:string;
 }

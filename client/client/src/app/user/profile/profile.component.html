@@ -1,34 +1,45 @@
 <div *ngIf="isUserDataLoaded" class="user-profile">
   <h1>Profile</h1>
-  <div style="text-align: right">
-    <button mat-flat-button color="primary" (click)="openEditDialog()">Edit Info</button>
-  </div>
 
-  <div style="text-align: center" class="row">
-    <div class="col">
-      <img class="profile-image"
-           [src]="previewImgUrl || formatImage(userProfileImage) || 'https://www.missingdogsuk.co.uk/wp-content/plugins/wp-job-manager-resumes/assets/images/candidate.png'"
-           alt="user image">
-      <input type="file"
-             style=""
+  <div class="row">
+    <div class="col left-col">
+      <input type="file" style="display: none"
              #fileInput
              (change)="onFileSelected($event)">
-      <button mat-button (click)="fileInput.click()">Pick File</button>
-      <button mat-button *ngIf="selectedFile" (click)="upload()">Upload</button>
-    </div>
-    <div class="col" style="text-align: center">
-      <h2>{{user?.username}}</h2>
-      <h3 style="text-align: center">{{user?.firstname}} {{user?.lastname}}</h3>
-      <p>{{user?.bio}}</p>
-    </div>
-    <mat-divider style="margin: 2rem 0"></mat-divider>
-    <div>
-      <button *ngIf="!addButtonClicked" mat-flat-button color="primary" routerLink="/profile/add" (click)="onAddButtonClick()">Add Post</button>
+      <button mat-flat-button color="primary"
+              class="pick-file-button"
+              (click)="fileInput.click()">Pick File
+      </button>
+      <button mat-button
+              *ngIf="selectedFile"
+              class="upload-button"
+              (click)="upload()">Upload
+      </button>
+
+      <img class="profile-image no-blur"
+           [src]="previewImgUrl || formatImage(userProfileImage) || 'https://www.missingdogsuk.co.uk/wp-content/plugins/wp-job-manager-resumes/assets/images/candidate.png'"
+           alt="user image">
+
 
     </div>
-    <div class="router-outlet-wrapper">
-      <router-outlet></router-outlet>
+    <div class="col right-col">
+      <button mat-flat-button color="primary" (click)="openEditDialog()">Edit Info</button>
+      <h2>{{user?.username}}</h2>
+      <h3>{{user?.firstname}} {{user?.lastname}}</h3>
+      <p>{{user?.bio}}</p>
+
     </div>
   </div>
 
+  <mat-divider style="margin: 2rem 0"></mat-divider>
+
+  <div class="footer">
+    <button *ngIf="!addButtonClicked" mat-flat-button color="primary" routerLink="/profile/add"
+            (click)="onAddButtonClick()">Add Post
+    </button>
+  </div>
+
+  <div class="router-outlet-wrapper">
+    <router-outlet></router-outlet>
+  </div>
 </div>
