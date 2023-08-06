@@ -7,12 +7,20 @@ html, body {
 .container {
   display: flex;
   justify-content: space-between;
-  padding: 20px;
+  padding: 10px;
   height: 89vh;
   transition: all 0.3s ease-in-out;
   overflow: hidden; /* добавьте эту строку */
 }
+.read-symbol {
+  font-size: 14px; /* adjust as needed */
+  color: green; /* adjust as needed */
+}
 
+.unread-symbol {
+  font-size: 20px; /* adjust as needed */
+  color: red; /* adjust as needed */
+}
 .chat-sidebar {
   flex: 1;
   background-color: #f0f0f0;

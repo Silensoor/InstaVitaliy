@@ -1,41 +1,51 @@
-<div *ngIf="isImageLoading; else dataLoaded" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-  <mat-spinner></mat-spinner>
+<div *ngIf="isImageLoading; else dataLoaded"
+     style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <mat-spinner></mat-spinner>
 </div>
 
 <ng-template #dataLoaded>
-  <div class="container">
-    <div class="chat-sidebar">
-      <h3>Dialogs</h3>
-      <div *ngFor="let chat of chats" class="chat-list-item" [class.selected]="selectedChat === chat"
-           (click)="selectChat(chat)">
-        <img class="chat-user-avatar"
-             [src]="getImageByChatId(chat.id) || 'https://www.missingdogsuk.co.uk/wp-content/plugins/wp-job-manager-resumes/assets/images/candidate.png'"
-             alt="user image">
-        <div class="chat-info">
-          <h4> {{chat.secondPersonName}} </h4>
-          <p> {{chat.lastMessage}} </p>
-          <p> {{chat.lastActiveTime | date:'short':'':'ru'}} </p>
+    <div class="container">
+        <div class="chat-sidebar">
+            <h3>Dialogs</h3>
+            <div *ngFor="let chat of chats" class="chat-list-item" [class.selected]="selectedChat === chat"
+                 (click)="selectChat(chat)">
+                <img class="chat-user-avatar"
+                     [src]="getImageByChatId(chat.id) || 'https://www.missingdogsuk.co.uk/wp-content/plugins/wp-job-manager-resumes/assets/images/candidate.png'"
+                     alt="user image">
+                <div class="chat-info">
+                    <h4> {{chat.secondPersonName}} </h4>
+                    <p> {{chat.lastMessage}} </p>
+                    <p> {{chat.lastActiveTime | date:'short':'':'ru'}} </p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="chat-window" *ngIf="selectedChat">
-      <button class="close-button" (click)="closeChat()">Закрыть</button>
-      <h3>Чат с {{getPersonName(selectedChat)}}</h3>
-     <div class="messages-container">
-      <div class="message" *ngFor="let message of messages" [class.message-right]="user.id === message.authorId" [class.message-left]="user.id !== message.authorId">
-        <img class="chat-user-avatar message-avatar"
-             [src]="message.authorId === user.id ? getImageByUserId(user.id) : getImageByUserId(getOtherPersonId(selectedChat))"
-             alt="user image">
-        <p class="message-time"> {{message.createTime | date:'short':'':'ru'}} </p>
-        <p> {{message.messageText}} </p>
-      </div>
-    </div>
+        <div class="chat-window" *ngIf="selectedChat">
+            <button class="close-button" (click)="closeChat()">Закрыть</button>
+            <h3>Чат с {{getPersonName(selectedChat)}}</h3>
+            <div class="messages-container" #messagesContainer (scroll)="onScroll($event)">
+                <div class="message" *ngFor="let message of messages"
+                     [class.message-right]="user.id === message.authorId"
+                     [class.message-left]="user.id !== message.authorId">
+                    <img class="chat-user-avatar message-avatar"
+                         [src]="message.authorId === user.id ? getImageByUserId(user.id) : getImageByUserId(getOtherPersonId(selectedChat))"
+                         alt="user image">
+                    <p class="message-time"> {{message.createTime | date:'short':'':'ru'}} </p>
+                    <p>
+                        {{message.messageText}}
+                        <span class="read-symbol" *ngIf="message.readStatus ">&#10003;</span>
+                        <span class="unread-symbol" *ngIf="!message.readStatus ">✉</span>
+                    </p>
 
-      <input [(ngModel)]="messageText" class="chat-input" placeholder="Напишите сообщение..."/>
-      <button class="send-button"
-              (click)="user.id === selectedChat.firstPersonId ? sendMessage(messageText, selectedChat.secondPersonId) : sendMessage(messageText, selectedChat.firstPersonId)">
-        Отправить
-      </button>
+
+                </div>
+            </div>
+
+
+            <input [(ngModel)]="messageText" class="chat-input" placeholder="Напишите сообщение..."/>
+            <button class="send-button"
+                    (click)="user.id === selectedChat.firstPersonId ? sendMessage(messageText, selectedChat.secondPersonId) : sendMessage(messageText, selectedChat.firstPersonId)">
+                Отправить
+            </button>
+        </div>
     </div>
-  </div>
 </ng-template>

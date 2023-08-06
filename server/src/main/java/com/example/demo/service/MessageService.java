@@ -117,4 +117,12 @@ public class MessageService {
         return userRepository.findUserByEmail(userName).
                 orElseThrow(() -> new UsernameNotFoundException("UserName not found " + userName));
     }
+
+    public void updateReadStatus(List<Long> messageIds) {
+        List<Message> messages = messageRepository.findAllById(messageIds);
+        for (Message message : messages) {
+            message.setReadStatus(true);
+        }
+        messageRepository.saveAll(messages);
+    }
 }

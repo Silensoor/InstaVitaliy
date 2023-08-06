@@ -25,8 +25,11 @@ public class MessageController {
         List<DialogDTO> dialogDTOS = imageService.setImageByDialogs(allDialogForUser,principal);
         return new ResponseEntity<>(dialogDTOS, HttpStatus.OK);
     }
-
-
+    @PutMapping("/read")
+    public ResponseEntity<?> updateReadStatus(@RequestBody List<Long> messageIds) {
+        messageService.updateReadStatus(messageIds);
+        return ResponseEntity.ok().build();
+    }
     @PostMapping("/{userId}/create")
     public ResponseEntity<Object> createMessageByID(@RequestBody String message,
                                                     Principal principal,
