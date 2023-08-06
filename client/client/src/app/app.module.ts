@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -17,15 +17,19 @@ import { UserPostsComponent } from './user/user-posts/user-posts.component';
 import { AddPostComponent } from './user/add-post/add-post.component';
 import { EditUserComponent } from './user/edit-user/edit-user.component';
 import { LikesDialogComponentComponent } from './user/likes-dialog-component/likes-dialog-component.component';
-import {CdkFixedSizeVirtualScroll, CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
+import {CdkFixedSizeVirtualScroll} from "@angular/cdk/scrolling";
 import { ChatComponent } from './user/chat/chat.component';
-import { ChatListComponent } from './user/chat-list/chat-list.component';
 import { ChatWindowComponent } from './user/chat-window/chat-window.component';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
 import { UsersPostsComponent } from './user/users-posts/users-posts.component';
+import {MatListModule} from "@angular/material/list";
+import {MatLineModule} from "@angular/material/core";
 
+import { registerLocaleData } from '@angular/common';
+import localeRu from '@angular/common/locales/ru';
+registerLocaleData(localeRu, 'ru');
 
 @NgModule({
   declarations: [
@@ -41,7 +45,6 @@ import { UsersPostsComponent } from './user/users-posts/users-posts.component';
     EditUserComponent,
     LikesDialogComponentComponent,
     ChatComponent,
-    ChatListComponent,
     ChatWindowComponent,
     UserProfileComponent,
     UsersPostsComponent
@@ -56,9 +59,14 @@ import { UsersPostsComponent } from './user/users-posts/users-posts.component';
     FormsModule,
     CdkFixedSizeVirtualScroll,
     InfiniteScrollModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    BrowserAnimationsModule,
+    MatListModule,
+    MatLineModule
+
   ],
   providers: [
+    {provide: LOCALE_ID, useValue: 'ru'},
     {multi: true, provide:HTTP_INTERCEPTORS,useClass:fwcAPIInterceptor},
     {multi:true,provide:HTTP_INTERCEPTORS,useClass:ErrorInterceptorService}
   ],

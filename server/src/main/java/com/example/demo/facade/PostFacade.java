@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-
 public class PostFacade {
 
     public PostDTO postToPostDTO(Post post) {

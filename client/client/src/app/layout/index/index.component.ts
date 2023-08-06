@@ -56,12 +56,12 @@ export class IndexComponent implements OnInit {
     }
   }
 
-  navigateToProfile(username: any) {
-    if (username === this.user.username) {
+  navigateToProfile(email: any) {
+    if (email === this.user.email) {
 
       this.router.navigate(['/profile']);
     } else {
-      this.router.navigate(['/user-profile', username]);
+      this.router.navigate(['/user-profile', email]);
     }
   }
 
@@ -131,6 +131,4 @@ export class IndexComponent implements OnInit {
     }
     return 'data:image/jpeg;base64,' + img;
   }
-
-
 }

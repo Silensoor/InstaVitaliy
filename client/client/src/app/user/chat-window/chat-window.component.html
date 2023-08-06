@@ -1,5 +1,13 @@
-<div class="chat-window" *ngIf="selectedChat">
-  <div *ngFor="let message of selectedChat.messages">
-    {{message}}
-  </div>
+<div mat-dialog-content>
+  <p>Вы в диалоге с {{user!.username}}</p>
+
+
+  <mat-form-field class="full-width">
+    <textarea matInput [(ngModel)]="messageText" (input)="adjustTextarea($event)"
+              placeholder="Ваше сообщение"></textarea>
+  </mat-form-field>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="sendMessage(messageText,user.id)">Отправить</button>
 </div>

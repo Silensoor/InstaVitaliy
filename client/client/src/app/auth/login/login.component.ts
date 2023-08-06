@@ -27,7 +27,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.routes.queryParams.subscribe(params => {
-      console.log('ПАРАМЕТРЫ ' + params);
       const jwt = params['jwt'];
       if (jwt) {
         this.tokenService.saveUser(params);

@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -20,9 +21,10 @@ public class Message {
     @Column(name = "message_text", columnDefinition = "TEXT")
     private String messageText;
     @Column(name = "read_status")
-    private String readStatus;
+    private Boolean readStatus;
     @Temporal(TemporalType.TIMESTAMP)
-    private Timestamp time;
+    @Column(name = "create_time")
+    private Date createTime;
     @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Dialog dialog;
     @Column(name = "author_id")

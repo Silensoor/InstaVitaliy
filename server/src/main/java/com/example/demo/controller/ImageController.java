@@ -7,11 +7,13 @@ import com.example.demo.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Base64;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +24,11 @@ public class ImageController {
     @GetMapping("/{username}")
     public ResponseEntity<ImageModel> getImageForPostUser(@PathVariable String username) {
         ImageModel imageForPostUser = imageService.getImageForPostUser(username);
+        return new ResponseEntity<>(imageForPostUser, HttpStatus.OK);
+    }
+    @GetMapping("/email/{email}")
+    public ResponseEntity<ImageModel> getImageForPostUserEmail(@PathVariable String email) {
+        ImageModel imageForPostUser = imageService.getImageForPostUser(email);
         return new ResponseEntity<>(imageForPostUser, HttpStatus.OK);
     }
 
@@ -36,6 +43,7 @@ public class ImageController {
     public ResponseEntity<MessageResponse> uploadImageToPost(@PathVariable("postId") String postId,
                                                              @RequestParam("file") MultipartFile file,
                                                              Principal principal) throws IOException {
+
         imageService.uploadImageToPost(file, principal, Long.parseLong(postId));
         return ResponseEntity.ok(new MessageResponse("Image upload successfully"));
     }
@@ -57,4 +65,12 @@ public class ImageController {
         ImageDTO profileImage = imageService.getImageProfileByPost(Long.parseLong(postId));
         return new ResponseEntity<>(profileImage, HttpStatus.OK);
     }
+    @GetMapping("/userId/{userId}")
+    public ResponseEntity<String> getImageByUserId(@PathVariable String userId) {
+        ImageModel imageByUserId = imageService.getImageByUserId(Long.parseLong(userId));
+        String encodedString = Base64.getEncoder().encodeToString(imageByUserId.getImageBytes());
+        return new ResponseEntity<>(encodedString, HttpStatus.OK);
+    }
+
+
 }

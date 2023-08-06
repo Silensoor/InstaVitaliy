@@ -83,10 +83,10 @@ public class PostService {
         }
         return postRepository.saveAndFlush(post);
     }
-    public List<Post> getPostsForUser(String username){
-        User user = userRepository.findUserByEmail(username)
-                .orElse(userRepository.findUserByUserName(username)
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found with username or email: " + username)));
+    public List<Post> getPostsForUser(String email){
+        User user = userRepository.findUserByEmail(email)
+                .orElseGet(() -> userRepository.findUserByUserName(email)
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found with username or email: " + email)));
        return postRepository.findAllByUserOrderByCreatedDateDesc(user);
 
     }

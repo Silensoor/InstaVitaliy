@@ -57,7 +57,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     }
 
     public String getJWTFromRequest(HttpServletRequest request) {
-        Enumeration<String> headerNames = request.getHeaderNames();
         String bearToken = request.getHeader(HEADER_STRING);
         if (StringUtils.hasText(bearToken) && bearToken.startsWith(TOKEN_PREFIX)) {
             return bearToken.split(" ")[1];

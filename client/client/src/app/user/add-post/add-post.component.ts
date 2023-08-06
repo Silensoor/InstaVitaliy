@@ -16,7 +16,6 @@ export class AddPostComponent implements OnInit {
 
   postForm!: FormGroup;
   selectedFile!: File;
-  isPostCreated = false;
   createdPost!: Post;
   previewImgUrl: any;
 

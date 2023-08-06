@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 
 const USER_API = 'http://localhost:8080/api/user/'
 
@@ -23,8 +23,16 @@ export class UserService {
   public updateUser(user: any): Observable<any> {
     return this.http.post(USER_API + 'update', user);
   }
-  public getUserByUserName(username:any):Observable<any>{
-    return this.http.get(USER_API+'username/'+username);
-  }
 
+  public getUserByUserName(username: any): Observable<any> {
+    return this.http.get(USER_API + 'username/' + username);
+  }
+  public getUserByUserEmail(email: any): Observable<any> {
+    return this.http.get(USER_API + 'email/' + email);
+  }
+  getPersonName(personId: number): Observable<any> {
+    return this.http.get(USER_API + 'name/' + personId).pipe(
+      map(response => (response as any).name)
+    );
+  }
 }

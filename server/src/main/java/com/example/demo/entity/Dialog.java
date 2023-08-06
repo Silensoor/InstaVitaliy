@@ -25,5 +25,7 @@ public class Dialog {
     @Column(name = "last_active_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastActiveTime;
+    @Column(name = "last_message")
+    private String lastMessage;
 
 }

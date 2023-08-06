@@ -18,7 +18,7 @@ export class UsersPostsComponent implements OnInit {
   openedCommentsIndex: number | null = null;
   isLUserPostsLoaded = false;
   posts!: Post[];
-  username!: string;
+  email!: string;
 
   constructor(private postService: PostService,
               private imageService: ImageUploadService,
@@ -29,8 +29,8 @@ export class UsersPostsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.username = this.route.snapshot.paramMap.get('username') || '';
-    this.postService.getPostForUser(this.username)
+    this.email = this.route.snapshot.paramMap.get('email') || '';
+    this.postService.getPostForUser(this.email)
       .subscribe(data => {
         console.log(data);
         this.posts = data;

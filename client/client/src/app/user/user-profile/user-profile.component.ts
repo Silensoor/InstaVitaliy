@@ -7,6 +7,7 @@ import {NotificationService} from "../../service/notification.service";
 import {ImageUploadService} from "../../service/image-upload.service";
 import {UserService} from "../../service/user.service";
 import {ActivatedRoute} from "@angular/router";
+import {ChatWindowComponent} from "../chat-window/chat-window.component";
 
 @Component({
   selector: 'app-user-profile',
@@ -15,10 +16,10 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class UserProfileComponent implements OnInit {
   isUserDataLoaded = false;
-  user?: User;
+  user!: User;
   userProfileImage?: File;
   previewImgUrl: any;
-  username!: string;
+  email!: string;
 
   constructor(private tokenService: TokenStorageService,
               private postService: PostService,
@@ -30,21 +31,33 @@ export class UserProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.username = this.route.snapshot.paramMap.get('username') || '';
-    this.userService.getUserByUserName(this.username)
+    this.email = this.route.snapshot.paramMap.get('email') || '';
+    this.userService.getUserByUserEmail(this.email)
       .subscribe(data => {
         this.user = data;
         this.isUserDataLoaded = true;
       });
-    this.imageService.getProfileImageByUserName(this.username)
+    this.imageService.getProfileImageByUserEmail(this.email)
       .subscribe(data => {
         this.userProfileImage = data.imageBytes;
       });
   }
+
   formatImage(img: any): any {
     if (img == null) {
       return null;
     }
     return 'data:image/jpeg;base64,' + img;
+  }
+
+  openMessageDialog(): void {
+    const dialogRef = this.dialog.open(ChatWindowComponent, {
+      width: '400px',
+      data: this.user
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 }

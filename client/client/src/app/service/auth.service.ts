@@ -5,7 +5,7 @@ import {error} from "@angular/compiler-cli/src/transformers/util";
 import {TokenStorageService} from "./token-storage.service";
 
 const AUTH_API = 'http://localhost:8080/api/auth/'
-const OAUTH_API = 'http://localhost:8080/oauth2/authorization/google'
+
 
 @Injectable({
   providedIn: 'root'

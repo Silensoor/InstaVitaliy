@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Post} from "../models/Post";
+import {switchMap} from "rxjs/operators";
 
 const IMAGE_API = 'http://localhost:8080/api/image/'
 
@@ -32,10 +33,16 @@ export class ImageUploadService {
   public getProfileImageByUserName(username: any): Observable<any> {
     return this.http.get(IMAGE_API + username);
   }
-
+  public getProfileImageByUserEmail(email: any): Observable<any> {
+    return this.http.get(IMAGE_API + 'email/'+email);
+  }
 
   public getImageToPost(postId: number): Observable<any> {
     return this.http.get(IMAGE_API + postId + '/image');
+  }
+
+  getPersonAvatar(personId: number): Observable<string> {
+    return this.http.get(IMAGE_API + 'userId/' + personId, {responseType: 'text'});
   }
 
 }

@@ -2,7 +2,7 @@
      [infiniteScrollThrottle]="50" (scrolled)="loadMorePosts()">
   <mat-card class="post-card" *ngFor="let post of posts; let i = index">
     <div class="card-header">
-      <mat-card-subtitle align="start" class="poster" (click)="navigateToProfile(post.username)">Posted by {{post.username}}</mat-card-subtitle>
+      <mat-card-subtitle align="start" class="poster" (click)="navigateToProfile(post.email)">Posted by {{post.username}}</mat-card-subtitle>
       <div class="header-info">
         <div class="title-caption">
           <p>Title: {{post.title}}</p>
@@ -10,7 +10,7 @@
         </div>
         <img class="profile-image"
              [src]="formatImage(post.imagePerson)||'https://www.missingdogsuk.co.uk/wp-content/plugins/wp-job-manager-resumes/assets/images/candidate.png'"
-             alt="post image" (click)="navigateToProfile(post.username)">
+             alt="post image" (click)="navigateToProfile(post.email)">
       </div>
       <mat-card-subtitle class="location">Location: {{post.location}}</mat-card-subtitle>
     </div>

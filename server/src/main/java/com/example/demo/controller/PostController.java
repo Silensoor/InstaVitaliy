@@ -65,9 +65,9 @@ public class PostController {
         return new ResponseEntity<>(new MessageResponse("Post was deleted"), HttpStatus.OK);
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<List<PostDTO>> getPostsForUser(@PathVariable String username) {
-        List<Post> post = postService.getPostsForUser(username);
+    @GetMapping("/{email}")
+    public ResponseEntity<List<PostDTO>> getPostsForUser(@PathVariable String email) {
+        List<Post> post = postService.getPostsForUser(email);
         List<PostDTO> postDTO = post.stream().map(postFacade::postToPostDTO).toList();
         return new ResponseEntity<>(postDTO, HttpStatus.OK);
     }

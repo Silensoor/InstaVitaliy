@@ -1,10 +1,13 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.DialogDTO;
 import com.example.demo.dto.ImageDTO;
+import com.example.demo.entity.Dialog;
 import com.example.demo.entity.ImageModel;
 import com.example.demo.entity.Post;
 import com.example.demo.entity.User;
 import com.example.demo.exceptions.ImageNotFoundException;
+import com.example.demo.repository.DialogRepository;
 import com.example.demo.repository.ImageRepository;
 import com.example.demo.repository.PostRepository;
 import com.example.demo.repository.UserRepository;
@@ -19,6 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
@@ -32,7 +36,22 @@ public class ImageService {
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final DialogRepository dialogRepository;
 
+
+    public List<DialogDTO> setImageByDialogs(List<DialogDTO> dialogDTOS, Principal principal) {
+        User user = getUserByPrincipal(principal);
+        return dialogDTOS.stream().peek(t -> {
+            if (user.getId().equals(t.getFirstPersonId())) {
+                Optional<ImageModel> byUserId = imageRepository.findByUserId(t.getSecondPersonId());
+                byUserId.ifPresent(imageModel -> t.setImage(decompressBytes(imageModel.getImageBytes())));
+            } else {
+                Optional<ImageModel> byUserId = imageRepository.findByUserId(t.getFirstPersonId());
+                byUserId.ifPresent(imageModel -> t.setImage(decompressBytes(imageModel.getImageBytes())));
+            }
+
+        }).toList();
+    }
 
     private byte[] compressBytes(byte[] data) {
         Deflater deflater = new Deflater();
@@ -54,6 +73,18 @@ public class ImageService {
         return outputStream.toByteArray();
     }
 
+    public byte[] getImageByteByDialogId(Long id) {
+        Optional<Dialog> dialog = dialogRepository.findById(id);
+        Optional<ImageModel> byUserId = null;
+        if (dialog.isPresent()) {
+            byUserId = imageRepository.findByUserId(dialog.get().getSecondPersonId());
+        }
+
+        return Objects.requireNonNull(byUserId).map(ImageModel::getImageBytes).orElse(null);
+
+
+    }
+
     private static byte[] decompressBytes(byte[] data) {
         Inflater inflater = new Inflater();
         inflater.setInput(data);
@@ -71,10 +102,11 @@ public class ImageService {
         return outputStream.toByteArray();
     }
 
-    public ImageModel getImageForPostUser(String username) {
-        User user = userRepository.findUserByEmail(username)
-                .orElse(userRepository.findUserByUserName(username)
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found with username or email: " + username)));
+    public ImageModel getImageForPostUser(String email) {
+        User user = userRepository.findUserByEmail(email)
+                .orElseGet(() -> userRepository.findUserByUserName(email)
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found with username or email: " + email)));
+
 
         ImageModel imageModel = imageRepository.findByUserId(user.getId()).orElse(null);
         if (imageModel != null) {
@@ -83,7 +115,15 @@ public class ImageService {
         return imageModel;
     }
 
-    public ImageModel uploadImageToUser(MultipartFile file, Principal principal) throws IOException {
+    public ImageModel getImageByUserId(Long userId) {
+        ImageModel imageModel = imageRepository.findByUserId(userId).orElse(null);
+        if (imageModel != null) {
+            imageModel.setImageBytes(decompressBytes(imageModel.getImageBytes()));
+        }
+        return imageModel;
+    }
+
+    public void uploadImageToUser(MultipartFile file, Principal principal) throws IOException {
         User user = getUserByPrincipal(principal);
         log.info("Uploading image profile to User {}", user.getUsername());
 
@@ -95,7 +135,7 @@ public class ImageService {
         imageModel.setUserId(user.getId());
         imageModel.setImageBytes(compressBytes(file.getBytes()));
         imageModel.setName(file.getOriginalFilename());
-        return imageRepository.saveAndFlush(imageModel);
+        imageRepository.saveAndFlush(imageModel);
 
     }
 

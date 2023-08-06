@@ -12,10 +12,10 @@ import {UserProfileComponent} from "./user/user-profile/user-profile.component";
 import {UsersPostsComponent} from "./user/users-posts/users-posts.component";
 
 const routes: Routes = [
-  {path:'user-profile/:username',component:UserProfileComponent,canActivate:[AuthGuardService],children:[
+  {path:'user-profile/:email',component:UserProfileComponent,canActivate:[AuthGuardService],children:[
       {path: '',component: UsersPostsComponent,canActivate: [AuthGuardService]}
     ]},
-  {path: 'chat',component:ChatComponent},
+  {path: 'chat', component: ChatComponent,canActivate:[AuthGuardService]},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'main', component: IndexComponent, canActivate: [AuthGuardService]},

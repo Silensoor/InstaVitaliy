@@ -25,8 +25,8 @@ export class PostService {
     return this.http.get(POST_API + 'user/posts');
   }
 
-  public getPostForUser(username: any): Observable<any> {
-    return this.http.get(POST_API + username);
+  public getPostForUser(email: any): Observable<any> {
+    return this.http.get(POST_API + email);
   }
 
   public deletePost(id: number): Observable<any> {
